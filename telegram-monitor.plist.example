@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Telegram Monitor LaunchAgent (standalone folder)
+  
+  Installation:
+    1. Copy this file to ~/Library/LaunchAgents/com.clawdbot.telegram-monitor.plist
+    2. Edit ProgramArguments: set the path to your telegram-monitor folder, e.g.:
+       /Users/you/telegram-monitor/telegram-monitor.sh
+    3. Load the service:
+       launchctl load ~/Library/LaunchAgents/com.clawdbot.telegram-monitor.plist
+  
+  Management:
+    - Start:   launchctl start com.clawdbot.telegram-monitor
+    - Stop:    launchctl stop com.clawdbot.telegram-monitor
+    - Unload:  launchctl unload ~/Library/LaunchAgents/com.clawdbot.telegram-monitor.plist
+    - Status:  launchctl list | grep telegram-monitor
+  
+  Logs:
+    - stdout/stderr: /tmp/telegram-monitor.out.log, /tmp/telegram-monitor.err.log
+    - Application:   ~/.clawdbot/telegram-monitor.log
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.clawdbot.telegram-monitor</string>
+    
+    <!-- Script path: set to your telegram-monitor folder, e.g. /Users/you/telegram-monitor/telegram-monitor.sh -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/path/to/telegram-monitor/telegram-monitor.sh</string>
+    </array>
+    
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>CHECK_INTERVAL</key>
+        <string>60</string>
+        <key>FAIL_THRESHOLD</key>
+        <string>3</string>
+        <key>RESTART_COOLDOWN</key>
+        <string>120</string>
+        <key>PROBE_TIMEOUT</key>
+        <string>15000</string>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin</string>
+    </dict>
+    
+    <key>RunAtLoad</key>
+    <true/>
+    
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+    </dict>
+    
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+    
+    <key>WorkingDirectory</key>
+    <string>/tmp</string>
+    
+    <key>StandardOutPath</key>
+    <string>/tmp/telegram-monitor.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/telegram-monitor.err.log</string>
+    
+    <key>Nice</key>
+    <integer>10</integer>
+</dict>
+</plist>
